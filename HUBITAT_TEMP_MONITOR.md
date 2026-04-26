@@ -7,8 +7,32 @@
 - Sends a recovery notification when temperature returns to range.
 - Sends one daily summary (default: 8PM local) with min/max/avg/latest values from the last 24 hours.
 
+## Package for your `hubitat-stuff` Codespace
+This repo now includes a Python package (`hubitat_stuff`) plus `pyproject.toml`, so you can copy/push this into your `hubitat-stuff` codespace and install it with pip.
+
+### Build package artifacts (wheel + sdist)
+```bash
+python3 -m pip install --upgrade build
+python3 -m build
+```
+
+Artifacts will be in `dist/` and can be uploaded or installed directly.
+
+### Install in your codespace
+```bash
+python3 -m pip install dist/hubitat_stuff-0.1.0-py3-none-any.whl
+```
+
+Then run:
+```bash
+hubitat-temp-monitor --help
+```
+
 ## Files
-- Script: `hubitat_temp_monitor.py`
+- Package module: `hubitat_stuff/monitor.py`
+- Entry point: `hubitat_stuff/__main__.py`
+- Backward-compatible script: `hubitat_temp_monitor.py`
+- Packaging config: `pyproject.toml`
 - Default log file: `./hubitat_temp_log.txt`
 - Default state file: `./hubitat_temp_state.json`
 
@@ -42,7 +66,7 @@ export NOTIFY_DEVICE_ID='123'             # If set, overrides label lookup
 export TEMP_DEVICE_LABEL='Box Sensor'     # Used if TEMP_DEVICE_ID is unset
 export TEMP_LOW_F='72'
 export TEMP_HIGH_F='74'
-export TEMP_ATTRIBUTE='sensorTemp'       # default in script
+export TEMP_ATTRIBUTE='sensorTemp'        # default in script
 export NOTIFY_COMMAND='deviceNotification'
 export LOG_FILE='/var/log/hubitat_temp_log.txt'
 export STATE_FILE='/var/lib/hubitat_temp_state.json'
@@ -50,19 +74,19 @@ export STATE_FILE='/var/lib/hubitat_temp_state.json'
 
 ## Find your device IDs (optional)
 ```bash
-python3 hubitat_temp_monitor.py --list-devices
+hubitat-temp-monitor --list-devices
 ```
 
 ## Test once
 ```bash
-python3 hubitat_temp_monitor.py
+hubitat-temp-monitor
 ```
 
 ## Cron (hourly)
 Use `crontab -e` and add:
 
 ```cron
-0 * * * * /usr/bin/env bash -lc 'source /opt/hubitat-monitor/env.sh && /usr/bin/python3 /path/to/hubitat_temp_monitor.py >> /var/log/hubitat_temp_monitor.log 2>&1'
+0 * * * * /usr/bin/env bash -lc 'source /opt/hubitat-monitor/env.sh && /usr/bin/hubitat-temp-monitor >> /var/log/hubitat_temp_monitor.log 2>&1'
 ```
 
 Where `/opt/hubitat-monitor/env.sh` contains your exported variables.

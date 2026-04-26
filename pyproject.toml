@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hubitat-stuff"
+version = "0.1.0"
+description = "Cron-friendly Hubitat temperature monitor with notifications"
+readme = "HUBITAT_TEMP_MONITOR.md"
+requires-python = ">=3.10"
+authors = [{name = "Hubitat Stuff"}]
+dependencies = []
+
+[project.scripts]
+hubitat-temp-monitor = "hubitat_stuff.monitor:run"
+
+[tool.setuptools]
+packages = ["hubitat_stuff"]
